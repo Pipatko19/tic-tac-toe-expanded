@@ -1,4 +1,5 @@
 import tkinter as tk
+import numpy as np
 
 class TttModel:
     def __init__(self) -> None:
@@ -6,6 +7,7 @@ class TttModel:
         self.str_player: tk.StringVar = tk.StringVar(value='Players turn: Crosses')
         self.nought_img = None
         self.cross_img = None
+        self.grid = np.zeros((3, 3), dtype=np.int8)
         
     @property
     def player(self):

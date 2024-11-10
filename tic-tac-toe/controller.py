@@ -25,3 +25,19 @@ class TttController:
         self.model.player = (self.model.player + 1) % 2
         cur_node['state'] = 'disabled'
         print('Current Player:', self.model.str_player.get())
+        
+        
+        self.model.grid[y, x] = 1 if self.model.player else -1
+        if self.check_winning(x, y):
+            self.view.end_message(self.model.str_player.get())
+        
+    def check_winning(self, x, y):
+        grid = self.model.grid
+        
+        row = abs(np.sum(grid[y, :]))
+        column = abs(np.sum(grid[:, x]))
+        main_diag = abs(np.sum(np.diag(grid, x - y)))
+        anti_diag = abs(np.sum(np.diag(np.fliplr(grid), (grid.shape[1] - x - 1) - y)))
+        
+        return row == 3 or column == 3 or main_diag == 3 or anti_diag == 3
+        

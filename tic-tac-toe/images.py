@@ -16,6 +16,10 @@ def create_cross_image(size):
     (10, size - 10, size - 10, 10)
     return ImageTk.PhotoImage(img)
 
+def create_empty(size):
+    img = Image.new("RGBA", (size, size), (255, 255, 255, 100))
+    return ImageTk.PhotoImage(img)
+
 if __name__ == '__main__':
     app = tk.Tk()
     app.geometry('200x200')
