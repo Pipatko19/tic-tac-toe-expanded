@@ -1,17 +1,26 @@
-import tkinter as tk
 import ttkbootstrap as ttk
+from ttkbootstrap.constants import *
 
-def on_button_click():
-    print("Button clicked!")
-
-root = ttk.Window(themename="simplex")
+# Create the main application window
+app = ttk.Window()
+app.title("Button Border Color Example")
+app.geometry("300x200")
 
 # Create a custom style for the button
 style = ttk.Style()
-style.configure("SquareButton.TButton", width=10, padding=20)
+style.configure("Custom.TButton", borderwidth=20)
 
-# Create a square button using the custom style
-button = ttk.Button(root, text="Click Me", style="SquareButton.TButton", command=on_button_click)
-button.pack(padx=10, pady=10)
+# Map the border color for the disabled state
+style.map("Custom.TButton", 
+          bordercolor=[("disabled", "red")],  # Change to your desired color
+          foreground=[("disabled", "gray")],  # Optional: Change text color too
+          background=[("disabled", "#f0f0f0")])  # Optional: Change background
 
-root.mainloop()
+# Create the button using the custom style
+button = ttk.Button(app, text="Disabled Button", style="Custom.TButton")
+button.pack(pady=20)
+
+# Disable the button to see the effect
+button.state(["disabled"])
+
+app.mainloop()

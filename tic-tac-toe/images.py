@@ -2,13 +2,15 @@ from PIL import Image, ImageDraw, ImageTk
 import tkinter as tk
 from tkinter import PhotoImage
 
-def create_nought_image(size):
+def create_nought_image(size: int) -> PhotoImage:
+    """create a blue circle."""
     img = Image.new("RGBA", (size, size), (255, 255, 255, 0))
     draw = ImageDraw.Draw(img)
     draw.ellipse((size // 15, size // 15, size - (size // 15), size - (size // 15)), outline="blue", width=20)
     return ImageTk.PhotoImage(img)
 
-def create_cross_image(size):
+def create_cross_image(size: int) -> PhotoImage:
+    """create a red cross."""
     img = Image.new("RGBA", (size, size), (255, 255, 255, 0))
     draw = ImageDraw.Draw(img)
     draw.line((size // 15, size // 15, size - (size // 15), size - (size // 15)), fill="red", width=20)
@@ -16,8 +18,8 @@ def create_cross_image(size):
     (10, size - 10, size - 10, 10)
     return ImageTk.PhotoImage(img)
 
-def create_empty(size):
-    img = Image.new("RGBA", (size, size), (255, 255, 255, 100))
+def create_single_colored(size: int, rgba: tuple[int] =(255, 255, 255, 0)) -> PhotoImage:
+    img = Image.new("RGBA", (size, size), rgba)
     return ImageTk.PhotoImage(img)
 
 if __name__ == '__main__':

@@ -3,10 +3,8 @@ import numpy as np
 
 class TttModel:
     def __init__(self) -> None:
-        self._player = 0
+        self._player: int = 0
         self.str_player: tk.StringVar = tk.StringVar(value='Players turn: Crosses')
-        self.nought_img = None
-        self.cross_img = None
         self.grid = np.zeros((3, 3), dtype=np.int8)
         
     @property
