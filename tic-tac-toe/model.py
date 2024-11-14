@@ -14,3 +14,9 @@ class TttModel:
     def player(self, val):
         self._player = val
         self.str_player.set('Players turn: ' + ('Crosses' if val == 0 else 'Noughts'))
+
+    
+    def default(self) -> None:
+        """Set attributes to their default state."""
+        self.player = 0
+        self.grid = np.zeros((3, 3), dtype=np.int8)

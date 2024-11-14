@@ -1,26 +1,61 @@
-import ttkbootstrap as ttk
-from ttkbootstrap.constants import *
+import tkinter as tk
+from ttkbootstrap import Style, Button, Toplevel
 
-# Create the main application window
-app = ttk.Window()
-app.title("Button Border Color Example")
-app.geometry("300x200")
 
-# Create a custom style for the button
-style = ttk.Style()
-style.configure("Custom.TButton", borderwidth=20)
+# Initialize main window and style
+root = tk.Tk()
+style = Style('cosmo')
 
-# Map the border color for the disabled state
-style.map("Custom.TButton", 
-          bordercolor=[("disabled", "red")],  # Change to your desired color
-          foreground=[("disabled", "gray")],  # Optional: Change text color too
-          background=[("disabled", "#f0f0f0")])  # Optional: Change background
+# Function to create and show a custom dialog
+def show_custom_dialog():
+    # Create a top-level dialog window
+    dialog = Toplevel(root)
+    dialog.title("Custom Retry Cancel Dialog")
+    dialog.geometry("300x150")
+    dialog.transient(root)  # Set as a transient window to the root
+    dialog.grab_set()  # Make the dialog modal
 
-# Create the button using the custom style
-button = ttk.Button(app, text="Disabled Button", style="Custom.TButton")
-button.pack(pady=20)
+    # Add a label message
+    label = tk.Label(dialog, text="Would you like to retry the operation?", font=("Helvetica", 12))
+    label.pack(pady=20)
 
-# Disable the button to see the effect
-button.state(["disabled"])
+    # Create a frame to hold the buttons
+    button_frame = tk.Frame(dialog)
+    button_frame.pack(pady=10)
 
-app.mainloop()
+    # Variable to store the result
+    result = tk.StringVar(value="")
+
+    # Retry button with custom style
+    retry_button = Button(
+        button_frame, 
+        text="Retry", 
+        bootstyle="danger-outline",  # Red retry button
+        command=lambda: [result.set("Retry"), dialog.destroy()]
+    )
+    retry_button.pack(side="left", padx=10)
+
+    # Cancel button with custom style
+    cancel_button = Button(
+        button_frame, 
+        text="Cancel", 
+        bootstyle="secondary-outline",  # Gray cancel button
+        command=lambda: [result.set("Cancel"), dialog.destroy()]
+    )
+    cancel_button.pack(side="right", padx=10)
+
+    # Wait for the dialog to close and return the result
+    root.wait_window(dialog)
+    return result.get()
+
+# Show the custom dialog and get the result
+user_choice = show_custom_dialog()
+
+# Check which button was clicked
+if user_choice == "Retry":
+    print("User chose to retry.")
+elif user_choice == "Cancel":
+    print("User chose to cancel.")
+
+# Run the application
+root.mainloop()

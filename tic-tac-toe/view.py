@@ -1,5 +1,4 @@
 import ttkbootstrap as ttk
-from ttkbootstrap.dialogs.dialogs import Messagebox
 from typing import Literal
 import numpy as np
 from images import create_single_colored, create_cross_image, create_nought_image
@@ -18,6 +17,7 @@ class TttView(ttk.Frame):
         style.configure('Grid.TFrame', background='blue')
         style.configure('TLabel', font=('garamond', 20, 'bold'), background= '#ADD8E6')
         style.configure('TFrame', background= '#ADD8E6')
+        style.configure('Border.TFrame', background='black')
         
         self.cross_img = create_cross_image(100)
         self.nought_img = create_nought_image(100)
@@ -41,16 +41,16 @@ class TttView(ttk.Frame):
         self.lbl_player = ttk.Label(master=self, text='placeholder')
         self.lbl_player.grid(column=0, row=1)
         
-        self.btn_reset = ttk.Button(master=self, text='reset', style='Reset.TButton')
-        self.btn_reset.grid(column=0, row=2, ipadx=40, pady=10)
+        frm_reset_border = ttk.Frame(master=self,style='Border.TFrame')
+        frm_reset_border.grid(column=0, row=2)
+        
+        self.btn_reset = ttk.Button(master=frm_reset_border, text='reset', style='Reset.TButton')
+        self.btn_reset.pack(padx=2, pady=2, ipadx=20)
 
         self.columnconfigure((0, 1, 2), weight=1)
         self.rowconfigure((0, 1, 2), weight=1)
 
-    def end_message(self, winner):
-        print(Messagebox.retrycancel(f'{winner} won! good job mate', title='winner!'))
-
-    def update_cell(self, y, x, player: Literal[0, 1]):
+    def update_cell(self, y, x, player: Literal[0, 1], disable=True):
         cur_node = self.cells[y, x]
 
         match player:
@@ -61,6 +61,12 @@ class TttView(ttk.Frame):
             case 2:
                 cur_node['image'] = self.empty_img
         cur_node['state'] = 'disabled'
+        
+    def default(self):
+        """Set the view to it's default state"""
+        for cell in self.cells.flat:
+            cell['image'] = self.empty_img
+            cell['state'] = 'enabled'
         
 if __name__ == '__main__':
     app = ttk.Window()

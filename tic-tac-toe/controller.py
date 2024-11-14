@@ -1,6 +1,8 @@
 from view import TttView
 from model import TttModel
 import numpy as np
+from ttkbootstrap.dialogs.dialogs import Messagebox
+
 
 class TttController:
     def __init__(self, view: TttView, model: TttModel) -> None:
@@ -11,6 +13,7 @@ class TttController:
             cell.config(command=lambda x=idx[1], y=idx[0]: self.on_click(x, y))
         
         self.view.lbl_player.config(textvariable=model.str_player)
+        self.view.btn_reset.config(command=self.reset)
     
     
     def on_click(self, x: int, y: int):
@@ -29,9 +32,13 @@ class TttController:
             for idx, val in np.ndenumerate(self.model.grid):
                 if val == 0:
                     self.view.update_cell(*idx, 2)
-            self.view.end_message(self.model.str_player.get())
-
-    
+            winner = self.model.str_player.get()
+            retry = Messagebox.retrycancel(f'{winner} won! good job mate', title='winner!', buttons=['a'])
+            print(retry)
+            print(type(retry))
+            if retry == 'no':
+                self.reset()
+        
     
     def check_winning(self, x: int, y: int):
         grid = self.model.grid
@@ -43,4 +50,13 @@ class TttController:
         
         return any(line == 3 for line in (row, column, main_diag, anti_diag))
         
+    def reset(self):
+        self.model.default()
+        self.view.default()
+        print('Board has been restarted!')
         
+    def handle_ending_input(self, msg: str):
+        print(msg)
+        print(type(msg))
+        if msg == 'retry':
+            self.reset()
