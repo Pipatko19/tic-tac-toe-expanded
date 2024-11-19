@@ -32,13 +32,9 @@ class TttController:
             for idx, val in np.ndenumerate(self.model.grid):
                 if val == 0:
                     self.view.update_cell(*idx, 2)
-            winner = self.model.str_player.get()
-            retry = Messagebox.retrycancel(f'{winner} won! good job mate', title='winner!', buttons=['a'])
-            print(retry)
-            print(type(retry))
-            if retry == 'no':
-                self.reset()
-        
+            winner = 'Noughts' if self.model.player == 1 else 'Crosses'
+            self.end_window = self.view.create_end_screen(ending_text=f'Player {winner} Won. Good Job Mate!')
+            self.end_window.btn_reset.config(command=self.reset)
     
     def check_winning(self, x: int, y: int):
         grid = self.model.grid
@@ -51,6 +47,8 @@ class TttController:
         return any(line == 3 for line in (row, column, main_diag, anti_diag))
         
     def reset(self):
+        if hasattr(self, 'end_window'):
+            self.end_window.destroy()
         self.model.default()
         self.view.default()
         print('Board has been restarted!')

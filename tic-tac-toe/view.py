@@ -2,22 +2,23 @@ import ttkbootstrap as ttk
 from typing import Literal
 import numpy as np
 from images import create_single_colored, create_cross_image, create_nought_image
-
+from end_screen import EndScreen
 
 class TttView(ttk.Frame):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.configure(style='TFrame')
         
-        style = ttk.Style()
-        style.configure('.', background = '#ADD8E6')
-        style.configure('Game.TButton', background='navy')
-        style.map('Game.TButton', background=[('disabled', 'navy')], bordercolor=[('disabled', 'green')])
-        style.configure('Reset.TButton', font=('garamond', 12, 'bold'), foreground='#FFF8DC')
-        style.configure('Grid.TFrame', background='blue')
-        style.configure('TLabel', font=('garamond', 20, 'bold'), background= '#ADD8E6')
-        style.configure('TFrame', background= '#ADD8E6')
-        style.configure('Border.TFrame', background='black')
+        self.style = ttk.Style()
+        self.style.configure('.', background = '#ADD8E6')
+        self.style.configure('Game.TButton', background='navy')
+        self.style.map('Game.TButton', background=[('disabled', 'navy')], bordercolor=[('disabled', 'green')])
+        self.style.configure('Reset.TButton', font=('garamond', 12, 'bold'), foreground='#FFF8DC')
+        self.style.configure('Grid.TFrame', background='blue')
+        self.style.configure('TLabel', font=('garamond', 20, 'bold'))
+        self.style.configure('Turn.TLabel', background= '#ADD8E6')
+        self.style.configure('TFrame', background= '#ADD8E6')
+        self.style.configure('Border.TFrame', background='black')
         
         self.cross_img = create_cross_image(100)
         self.nought_img = create_nought_image(100)
@@ -38,7 +39,7 @@ class TttView(ttk.Frame):
         frm_cell_grid.columnconfigure((0, 1, 2), weight=1, minsize=120)
         frm_cell_grid.rowconfigure((0, 1, 2), weight=1, minsize=120)
         
-        self.lbl_player = ttk.Label(master=self, text='placeholder')
+        self.lbl_player = ttk.Label(master=self, text='placeholder', style='Turn.TLabel')
         self.lbl_player.grid(column=0, row=1)
         
         frm_reset_border = ttk.Frame(master=self,style='Border.TFrame')
@@ -65,9 +66,14 @@ class TttView(ttk.Frame):
     def default(self):
         """Set the view to it's default state"""
         for cell in self.cells.flat:
-            cell['image'] = self.empty_img
+            cell['image'] = self.available_img
             cell['state'] = 'enabled'
-        
+    
+    def create_end_screen(self, ending_text=''):
+        end_window = EndScreen(style=self.style, master=self, ending_text=ending_text)
+        end_window.btn_exit.config(command=self.master.destroy)
+        return end_window
+    
 if __name__ == '__main__':
     app = ttk.Window()
     app.config(background='#ADD8E6')
