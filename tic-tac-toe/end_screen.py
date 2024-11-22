@@ -4,6 +4,7 @@ class EndScreen(ttk.Toplevel):
     def __init__(self, style: ttk.Style, ending_text='', *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.config(background='#ADD8E6')
+        self.attributes('-topmost', True)
         style.configure('TLabel', background='#ADD8E6')
         style.configure('Action.TButton', font=(20, 'garamond'))
         frm_main = ttk.Frame(master=self, style='Main.TFrame')

@@ -2,6 +2,7 @@ import ttkbootstrap as ttk
 from typing import Literal
 import numpy as np
 from images import create_single_colored, create_cross_image, create_nought_image
+from style import apply_style
 from end_screen import EndScreen
 
 class TttView(ttk.Frame):
@@ -10,15 +11,8 @@ class TttView(ttk.Frame):
         self.configure(style='TFrame')
         
         self.style = ttk.Style()
-        self.style.configure('.', background = '#ADD8E6')
-        self.style.configure('Game.TButton', background='navy')
-        self.style.map('Game.TButton', background=[('disabled', 'navy')], bordercolor=[('disabled', 'green')])
-        self.style.configure('Reset.TButton', font=('garamond', 12, 'bold'), foreground='#FFF8DC')
-        self.style.configure('Grid.TFrame', background='blue')
-        self.style.configure('TLabel', font=('garamond', 20, 'bold'))
-        self.style.configure('Turn.TLabel', background= '#ADD8E6')
-        self.style.configure('TFrame', background= '#ADD8E6')
-        self.style.configure('Border.TFrame', background='black')
+        apply_style(self.style)
+
         
         self.cross_img = create_cross_image(100)
         self.nought_img = create_nought_image(100)

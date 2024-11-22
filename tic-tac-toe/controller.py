@@ -19,6 +19,7 @@ class TttController:
     def on_click(self, x: int, y: int):
         """Controls player alternations"""
         print(f'Current position: {x}.{y}!')
+        self.model.free -= 1
         
         #update player
         print('Current Player:', self.model.str_player.get())
@@ -35,6 +36,10 @@ class TttController:
             winner = 'Noughts' if self.model.player == 1 else 'Crosses'
             self.end_window = self.view.create_end_screen(ending_text=f'Player {winner} Won. Good Job Mate!')
             self.end_window.btn_reset.config(command=self.reset)
+        elif self.model.free < 1:
+            self.end_window = self.view.create_end_screen(ending_text=f'It\'s a tie! No one wins...')
+            self.end_window.btn_reset.config(command=self.reset)
+            
     
     def check_winning(self, x: int, y: int):
         grid = self.model.grid

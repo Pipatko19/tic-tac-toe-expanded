@@ -1,5 +1,4 @@
 import ttkbootstrap as ttk
-
 from view import TttView
 from controller import TttController
 from model import TttModel
