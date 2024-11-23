@@ -1,7 +1,7 @@
 import ttkbootstrap as ttk
-from view import TttView
-from controller import TttController
-from model import TttModel
+from mvc.view import TttView
+from mvc.controller import TttController
+from mvc.model import TttModel
 
 if __name__ == '__main__':
     app = ttk.Window()
