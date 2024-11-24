@@ -8,8 +8,9 @@ if __name__ == '__main__':
     app.configure(background='#ADD8E6')
     app.title('Tic tac toe')
     app.minsize(450, 450)
-    view = TttView(master=app)
-    view.pack(padx=20, pady=20)
+
     model = TttModel()
+    view = TttView(master=app, model=model)
+    view.pack(padx=20, pady=20)
     controller = TttController(view, model)
     app.mainloop()

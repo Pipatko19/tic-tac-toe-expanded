@@ -1,23 +1,22 @@
 import ttkbootstrap as ttk
 from typing import Literal
 import numpy as np
-from images import create_single_colored, create_cross_image, create_nought_image
+from PIL import ImageTk
+
+from mvc.model import TttModel
 from style import apply_style
 from end_screen import EndScreen
 from helper_functions import increase_grid
 
 class TttView(ttk.Frame):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, model: TttModel, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.configure(style='TFrame')
-        
+        self.model = model
         self.style = ttk.Style()
         apply_style(self.style)
 
-        self.cross_img = create_cross_image(100)
-        self.nought_img = create_nought_image(100)
-        self.available_img = create_single_colored(100, rgba=(255, 255, 255, 50))
-        self.empty_img = create_single_colored(100)
+        self.create_images()
         
         self.frm_cell_grid = ttk.Frame(master= self, style='Grid.TFrame')
         self.frm_cell_grid.grid(column=0, row=0)
@@ -43,7 +42,7 @@ class TttView(ttk.Frame):
 
         self.columnconfigure((0, 1, 2), weight=1)
         self.rowconfigure((0, 1, 2), weight=1)
-    
+        
     def add_cells(self, size: int, grid_values: np.ndarray):
         self.cells = increase_grid(size, self.cells, dtype=ttk.Button)
         for y in range(size):
@@ -52,14 +51,16 @@ class TttView(ttk.Frame):
 
                 self.cells[y, x] = btn_cell
                 if len(self.cells) != 1:
-                    self.update_img(grid_values[y, x], node=btn_cell)
+                    self.update_button_img(grid_values[y, x], node=btn_cell)
                 btn_cell.grid(row=y, column=x, sticky='news', ipadx=0, ipady=0)
+                
     def destroy_cells(self):
         for row in self.cells:
             for widget in row:
                 widget.grid_forget()
                 widget.destroy()
-    def update_img(self, player: Literal[0, 1, 2], node: ttk.Button = None, y= None, x = None, disable=True):
+                
+    def update_button_img(self, player: Literal[0, 1, 2], node: ttk.Button = None, y= None, x = None, disable=True):
         if node is None:
             if y is None or x is None:
                 raise ValueError('Reference nor coordinates were provided!')
@@ -76,10 +77,17 @@ class TttView(ttk.Frame):
             case 2:
                 node['image'] = self.empty_img
         node['state'] = 'disabled'
-        
+    
+    def create_images(self):
+        self.cross_img = ImageTk.PhotoImage(self.model.cross_img)
+        self.nought_img = ImageTk.PhotoImage(self.model.nought_img)
+        self.available_img = ImageTk.PhotoImage(self.model.available_img)
+        self.empty_img = ImageTk.PhotoImage(self.model.empty_img)
+    
     def default(self):
         """Set the view to it's default state"""
         self.destroy_cells()
+        self.create_images()
         self.cells: np.ndarray[ttk.Button]= np.empty((1, 1), dtype=ttk.Button).reshape(1, 1)
         self.add_cells(1, 0)
     

@@ -2,33 +2,26 @@ from PIL import Image, ImageDraw, ImageTk
 import tkinter as tk
 from tkinter import PhotoImage
 
-def create_nought_image(size: int) -> PhotoImage:
+def create_nought_image(size: int) -> Image.Image:
     """create a blue circle."""
     img = Image.new("RGBA", (size, size), (255, 255, 255, 0))
     draw = ImageDraw.Draw(img)
     draw.ellipse((size // 15, size // 15, size - (size // 15), size - (size // 15)), outline="blue", width=20)
-    return ImageTk.PhotoImage(img)
+    return img
 
-def create_cross_image(size: int) -> PhotoImage:
+def create_cross_image(size: int) -> Image.Image:
     """create a red cross."""
     img = Image.new("RGBA", (size, size), (255, 255, 255, 0))
     draw = ImageDraw.Draw(img)
     draw.line((size // 15, size // 15, size - (size // 15), size - (size // 15)), fill="red", width=20)
     draw.line((size // 15, size - (size // 15), size - (size // 15), size // 15), fill="red", width=20)
     (10, size - 10, size - 10, 10)
-    return ImageTk.PhotoImage(img)
+    return img
 
-def create_single_colored(size: int, rgba: tuple[int] =(255, 255, 255, 0)) -> PhotoImage:
+def create_single_colored(size: int, rgba: tuple[int] =(255, 255, 255, 0)) -> Image.Image:
     img = Image.new("RGBA", (size, size), rgba)
-    return ImageTk.PhotoImage(img)
+    return img
+
 
 if __name__ == '__main__':
-    app = tk.Tk()
-    app.geometry('200x200')
-    img = create_nought_image(400)
-    img2 = create_cross_image(400)
-    label = tk.Label(image=img)
-    label.pack()
-    label2 = tk.Label(image=img2)
-    label2.pack()
-    app.mainloop()
+    print(type(create_nought_image(20)))

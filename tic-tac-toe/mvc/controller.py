@@ -19,24 +19,26 @@ class TttController:
     def on_click(self, x: int, y: int):
         """Controls player alternations"""
         print(f'Current position: {x}.{y}!')
+        print('Free:', self.model.free)
         self.model.free -= 1
         
         #update player
         print('Current Player:', self.model.str_player.get())
         self.model.player = self.model.player * (-1)
         
-        self.view.update_img(self.model.player, y=y, x=x)
+        self.view.update_button_img(self.model.player, y=y, x=x)
         
         self.model.grid[y, x] = 1 if self.model.player == 1 else -1
         
         if self.check_winning(x, y):
             for idx, val in np.ndenumerate(self.model.grid):
                 if val == 0:
-                    self.view.update_img(2, y=idx[0], x=idx[1])
+                    self.view.update_button_img(2, y=idx[0], x=idx[1])
             winner = 'Noughts' if self.model.player == 1 else 'Crosses'
             self.end_window = self.view.create_end_screen(ending_text=f'Player {winner} Won. Good Job Mate!')
             self.end_window.btn_reset.config(command=self.reset)
-            
+        if self.model.free < 1:
+            self.expand()
     
     def check_winning(self, x: int, y: int):
         grid = self.model.grid
@@ -59,6 +61,9 @@ class TttController:
     def expand(self):
         self.view.destroy_cells()
         self.model.increase_size()
+        self.model.resize_images(self.model.size)
+        self.view.create_images()
+        
         self.view.add_cells(self.model.size, self.model.grid)
         for idx, cell in np.ndenumerate(self.view.cells):
             cell.config(command=lambda x=idx[1], y=idx[0]: self.on_click(x, y))
