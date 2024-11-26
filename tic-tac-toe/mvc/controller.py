@@ -64,7 +64,7 @@ class TttController:
         self.model.default()
         self.view.default()
         self.view.cells[0, 0].config(command=lambda x=0, y=0: self.on_click(0, 0))
-        print('Board has been restarted!')
+        print('Board has been cleared!')
     
     def expand(self):
         """Increases the size of the board"""

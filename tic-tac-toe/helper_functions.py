@@ -9,12 +9,10 @@ def calculate_validity(arr: np.ndarray, cur_idx: int, sign: int, target=5) -> bo
     points = 0
     idx = cur_idx
     while idx < len(arr) and arr[idx] == sign:
-        print(idx)
         points += 1
         idx += 1
     idx = cur_idx - 1
     while idx >= 0 and arr[idx] == sign:
-        print(idx)
         points += 1
         idx -= 1
     if points >= target: print(arr, cur_idx, sign, target)
