@@ -44,6 +44,7 @@ class TttModel:
         self.resize_images(1)
     
     def resize_images(self, buttons_per_row: int):
+        """Resizes the images to keep the same size when increasing buttons"""
         side = (TttModel.MAX_IMG_SIZE // buttons_per_row) - 10
         new_size = (side, side)
         self.cross_img = self.cross_img.resize(new_size, Image.LANCZOS)
