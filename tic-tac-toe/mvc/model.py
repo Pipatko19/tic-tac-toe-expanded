@@ -9,7 +9,7 @@ from images import create_cross_image, create_nought_image, create_single_colore
 class TttModel:
     MAX_IMG_SIZE = 700
     def __init__(self) -> None:
-        self._player: int = -1
+        self._player: int = 1
         self.free: int = 1
         self.size: int = 1
         self.str_player: tk.StringVar = tk.StringVar(value='Players turn: Crosses')
@@ -27,7 +27,7 @@ class TttModel:
     @player.setter
     def player(self, val: Literal[1, -1]):
         self._player = val
-        self.str_player.set('Players turn: ' + ('Crosses' if val == -1 else 'Noughts'))
+        self.str_player.set('Players turn: ' + ('Crosses' if val == 1 else 'Noughts'))
         
     def increase_size(self):
         self.size += 2
