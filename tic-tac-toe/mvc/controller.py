@@ -36,7 +36,7 @@ class TttController:
                 if val == 0:
                     self.view.update_button_img(2, y=idx[0], x=idx[1])
             winner = 'Noughts' if self.model.player == 1 else 'Crosses'
-            self.end_window = self.view.create_end_screen(ending_text=f'Player {winner} Won. Good Job Mate!')
+            self.end_window = self.view.create_end_screen(ending_text=f'{winner} Won. Good Job Mate!')
             self.end_window.btn_reset.config(command=self.reset)
             
         elif self.model.free < 1:
